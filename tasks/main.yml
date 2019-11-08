@@ -1,0 +1,26 @@
+---
+
+- name: create MongoDB Atlas clusters
+  with_items: "{{ clusters }}"
+  mongo_atlas_cluster:
+    atlas_username: "{{ atlas_username }}"
+    atlas_api_key: "{{ atlas_api_key }}"
+    atlas_group_id: "{{ atlas_group_id }}"
+    name: "{{ item.name }}"
+    instance_size: "{{ item.size }}"
+    encrypt: true
+    backup_enabled: false
+    state: "{{ item.state }}"
+
+- name: create MongoDB Atlas users
+  with_items: "{{ users }}"
+  mongo_atlas_user:
+    atlas_username: "{{ atlas_username }}"
+    atlas_api_key: "{{ atlas_api_key }}"
+    atlas_group_id: "{{ atlas_group_id }}"
+    user: "{{ item.user }}"
+    state: "{{ item.state }}"
+    update_password: on_create
+    roles: "{{ item.roles }}"
+    password: "{{ item.password }}"
+    

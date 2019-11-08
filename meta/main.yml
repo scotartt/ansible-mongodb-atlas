@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Scot Mcphee based on version by Jesse Dearing
+  description: mongdoDB atlas cluster set up using environment variables not .ini file
+  company: Virgin Australia Airlines
+  license: MIT
+  min_ansible_version: 2.1
+  platforms:
+  - name: EL
+    versions:
+    - 6
+    - 7
+  categories:
+  - devops
+  - mongodb
+  - atlas
