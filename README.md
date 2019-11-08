@@ -4,45 +4,24 @@ Ansible modules for provisioning users and clusters with MongoDB Atlas.
 
 Example:
 
-Create a config file for your atlas credentials (~/.atlas.ini):
+-Create a config file for your atlas credentials (~/.atlas.ini):-
 
-```ini
-[atlas]
-username=you@email.com
-api_key=abcdef01-2345-6789-abcd-ef0123456789
-atlas_group_id=0123456890abcef012345678
-```
+> Update: Please don't do that: you're committing credentials to a source code repository! Instead, this version expects the environment to be securely set with the following three variables. `{{ atlas_username }}` `{{ atlas_api_key }}`  and  `{{ atlas_group_id }}`
 
-roles/mongodb_atlas/tasks/main.yml:
+This repository has also been configured so that you can pull it down with `ansible-galaxy`, e.g.
+`ansible-galaxy install --force --roles-path ./roles -r ./roles/requirements.yml` with a roles/requirements.yml that contains:
 
 ```yaml
 ---
-# This is a stub for the creation of clusters
-- name: create MongoDB Atlas clusters
-  with_items: "{{ clusters }}"
-  mongo_atlas_cluster:
-    atlas_username: "{{ lookup('ini', 'username section=atlas file=~/.atlas.ini') }}"
-    atlas_api_key: "{{ lookup('ini', 'api_key section=atlas file=~/.atlas.ini') }}"
-    atlas_group_id: "{{ lookup('ini', 'atlas_group_id section=atlas file=~/.atlas.ini') }}"
-    name: "{{ item.name }}"
-    instance_size: "{{ item.size }}"
-    encrypt: true
-    backup_enabled: false
-    state: "{{ item.state }}"
-
-- name: create MongoDB Atlas users
-  with_items: "{{ users }}"
-  mongo_atlas_user:
-    atlas_username: "{{ lookup('ini', 'username section=atlas file=~/.atlas.ini') }}"
-    atlas_api_key: "{{ lookup('ini', 'api_key section=atlas file=~/.atlas.ini') }}"
-    atlas_group_id: "{{ lookup('ini', 'atlas_group_id section=atlas file=~/.atlas.ini') }}"
-    user: "{{ item.user }}"
-    state: "{{ item.state }}"
-    update_password: on_create
-    roles: "{{ item.roles }}"
-    password: "{{ item.password }}"
+- src: git+https://github.com/scotartt/ansible-mongodb-atlas.git
 
 ```
+
+This will pull down the role into the directory `roles/ansible-mongodb-atlas` under your current directory.
+
+The tasks file `roles/ansible-mongodb-atlas/tasks/main.yml` is now supplied in the package, you don't have to create it.
+
+To use it, just specify the details in your playbook, an example is below. The Atlas API username, API key, and your 'group id' for Atlas need to be securely sourced (not in your code repo!), as well as the mongo DB usernames and *especially* passwords.
 
 mongodb_atlas.yml:
 
@@ -51,7 +30,7 @@ mongodb_atlas.yml:
 - hosts: localhost
   connection: local
   roles:
-    - role: mongodb_atlas
+    - role: ansible-mongodb-atlas
       clusters:
         - name: test-mongo
           size: M10
