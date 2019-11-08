@@ -23,5 +23,5 @@
     state: "{{ item.state }}"
     update_password: on_create
     roles: "{{ item.roles }}"
-    # password: "{{ item.password }}"
-    
+    password: "{{ item.password }}"
+
