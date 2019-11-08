@@ -4,7 +4,7 @@ Ansible modules for provisioning users and clusters with MongoDB Atlas.
 
 Example:
 
--Create a config file for your atlas credentials (~/.atlas.ini):-
+~~Create a config file for your atlas credentials (~/.atlas.ini):~~
 
 > Update: Please don't do that: you're committing credentials to a source code repository! Instead, this version expects the environment to be securely set with the following three variables. `{{ atlas_username }}` `{{ atlas_api_key }}`  and  `{{ atlas_group_id }}`
 
