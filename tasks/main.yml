@@ -8,9 +8,10 @@
     atlas_group_id: "{{ atlas_group_id }}"
     name: "{{ item.name }}"
     instance_size: "{{ item.size }}"
-    encrypt: true
-    backup_enabled: false
+    encrypt: "{{ item.encrypt }}"
+    backup_enabled: "{{ item.backup }}"
     state: "{{ item.state }}"
+    region_name: "{{ item.region }}"
 
 - name: create MongoDB Atlas users
   with_items: "{{ users }}"
@@ -22,5 +23,5 @@
     state: "{{ item.state }}"
     update_password: on_create
     roles: "{{ item.roles }}"
-    password: "{{ item.password }}"
+    # password: "{{ item.password }}"
     
