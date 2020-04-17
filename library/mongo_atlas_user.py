@@ -11,7 +11,9 @@ description:
     - This module provides the ability to provision users on MongoDB instances
     - hosted in Atlas
 version_added: "2.2"
-author: "Jesse Dearing, @jessedearing"
+author:
+    - "Jesse Dearing (@jessedearing)"
+    - "David Castellanos (@davidcaste)"
 requirements:
     - MongoDB Atlas account access
     - MongoDB Atlas API key
@@ -122,7 +124,7 @@ def get_user(atlas_group_id, atlas_username, atlas_api_key, user):
 
 def create_user(atlas_group_id, atlas_username, atlas_api_key, user, roles,
                 password):
-    roles_with_dbs = map(map_roles, roles)
+    roles_with_dbs = list(map(map_roles, roles))
     url = "https://cloud.mongodb.com/api/atlas/v1.0/groups/" + atlas_group_id \
         + "/databaseUsers"
     user = dict(databaseName='admin',
@@ -152,7 +154,7 @@ def delete_user(atlas_group_id, atlas_username, atlas_api_key, user):
 
 def sync_user(atlas_group_id, atlas_username, atlas_api_key, user,
               http_response, roles, password):
-    roles_with_dbs = map(map_roles, roles)
+    roles_with_dbs = list(map(map_roles, roles))
     if http_response['roles'] == roles_with_dbs and password is None:
         return dict(changed=False)
 
